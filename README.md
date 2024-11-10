@@ -8,27 +8,3 @@ Activate the virtual environment:
 `source .venv/bin/activate`
 Install dependencies using below code:
 `pip install -r requirements.txt`
-
-
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/jashdalal/NewsNugget">
-    <img src="UI_snapshots/Lecture Mate Logo.png" alt="Logo" width="250" height="200">
-  </a>
-
-  <h3 align="center">News Nugget</h3>
-
-  <p align="center">
-    A real-time news summarizer and preference-based notification app!
-    <br />
-    <br />
-    <br />
-    <a href="https://www.youtube.com/watch?v=0Ckc3kCLS6o">View Demo</a>
-    ·
-    <a href="https://github.com/jashdalal/NewsNugget/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/jashdalal/NewsNugget/pulls">Contribute</a>
-  </p>
-</p>
-
