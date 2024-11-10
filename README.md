@@ -14,7 +14,7 @@ Install dependencies using below code:
 <br />
 <p align="center">
   <a href="https://github.com/jashdalal/NewsNugget">
-    <img src="images/logo.png" alt="Logo" width="250" height="200">
+    <img src="UI_snapshots/Lecture Mate Logo.png" alt="Logo" width="250" height="200">
   </a>
 
   <h3 align="center">News Nugget</h3>
