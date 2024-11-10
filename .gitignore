@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+*.joblib
+.venv
+train_text_data
+pyproject.toml
