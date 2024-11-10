@@ -13,16 +13,7 @@ from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 from PIL import Image
 import torch
 
-def deep_ocr(image):
-    processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-handwritten")
-    model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-handwritten")
-    image = Image.open(image    ).convert("RGB")
-    pixel_values = processor(image, return_tensors="pt").pixel_values
-    generated_ids = model.generate(pixel_values)
-    generated_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-    return generated_text
-
-def group_pdfs_by_lecture(directory):
+def group_pdfs_by_lecture(directory: str) -> dict:
     """
     Groups PDF files by lecture number based on their filenames.
 
@@ -46,49 +37,15 @@ def group_pdfs_by_lecture(directory):
 
     return lecture_groups
 
-def pdf_to_images(pdf_path, dpi=300):
-    try:
-        return convert_from_path(pdf_path, dpi=dpi)
-    except Exception as e:
-        Exception(f"Error converting PDF to images: {e}")
+def extract_text_from_pdf(pdf_path: str) -> str | None:
+    """Extract text from the given pdf file
 
-def preprocess_image(image):
-    # Convert PIL Image to OpenCV format
-    image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    Args:
+        pdf_path: Path to the PDF file
 
-    # Convert to grayscale
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-    # Apply thresholding
-    _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY_INV)
-
-    # Noise removal with morphological operations
-    kernel = np.ones((1, 1), np.uint8)
-    processed = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
-
-    return processed
-
-def ocr_image(image):
-    # Convert OpenCV image back to PIL format
-    pil_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-
-    # Configure Tesseract to treat the image as a single text line
-    custom_config = r'--oem 3 --psm 6'
-
-    text = pytesseract.image_to_string(pil_image, config=custom_config)
-    return text
-
-def ocr_pdf(pdf_path, output_folder='temp_images', dpi=300):
-    images = pdf_to_images(pdf_path)
-    processed_images = [preprocess_image(img) for img in images]  # pyright: ignore
-    extracted_text = ""
-    for idx, img in enumerate(processed_images):
-        text = deep_ocr(img)
-        extracted_text += text
-
-    return extracted_text
-
-def extract_text_from_pdf(pdf_path):
+    Returns:
+        str of the extracted PDF
+    """
     try:
         # Open the PDF file in binary mode
         with open(pdf_path, 'rb') as file:
@@ -107,9 +64,20 @@ def extract_text_from_pdf(pdf_path):
         print(f"Error reading PDF file: {e}")
         return None
 
+def process_pdf(file) -> None:
+    """Generate txt file using the given PDF file path content
+
+    Args:
+        path: Directory path containing all the PDF files
+    """
+    extracted_text = ""
+    with open(f'train_text_data/50.txt', 'w+') as train_text:
+        if 'notes' not in file:
+            text = extract_text_from_pdf(file)
+            extracted_text += f"\n{text}"
+        train_text.write(extracted_text)
+
 if __name__ == "__main__":
-    # pdf_path = '/Users/dhrumeen/Downloads/685/4_notes.pdf'
-    # print(ocr_pdf(pdf_path))
     pdf_path = '~/685/'  # Replace with your PDF file path
     grouped_pdfs = group_pdfs_by_lecture(pdf_path)
     print(len(grouped_pdfs))
