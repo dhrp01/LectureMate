@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 
-from model_generate_reponse import generate_response
+from .model_generate_reponse import generate_response
 from read_pdf import process_pdf
 
 app = FastAPI()
